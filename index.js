@@ -49,7 +49,8 @@ formEnviar.addEventListener("submit", (event) => {
         return fetch(`${url}${page}`, {
             headers: {
                 "Accept": "application/json"
-            }
+            },
+            referrer: "unsafe_url" 
         }) // Append the page number to the base URL
           .then(response => response.json())
           .then(newResponse => {

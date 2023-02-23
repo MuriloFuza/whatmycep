@@ -46,7 +46,7 @@ formEnviar.addEventListener("submit", (event) => {
         previousResponse = []
       ) {
 
-        return fetch(`${url}/${page}`, {
+        return fetch(`${url}${page}`, {
             headers: {
                 "Accept": "application/json"
             }

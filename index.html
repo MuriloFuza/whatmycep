@@ -9,7 +9,6 @@
   </head>
   <body>
     <div id="loader">   
-
     </div>
     <nav>
       <div class="logo">
@@ -27,16 +26,7 @@
           utilizados são apenas para fins estatísticos e de análise de tráfego, e não são 
           transferidos para nossos servidores. Ao continuar navegando, você concorda com 
           nosso uso de cookies.</p>
-          <button class="cookie-popup__button" onclick="acceptCookies()">Aceitar</button>
-
-        <script>
-          function acceptCookies() {
-            // Define um cookie de aceitação com validade de 1 ano
-            document.cookie = "cookie_consent=true; max-age=" + 60 * 60 * 24 * 365;
-            // Esconde o popup
-            document.querySelector(".cookie-popup").style.display = "none";
-          }
-        </script>
+          <button id="cookie-popup__button">Aceitar</button>
       </div>
 
       <h3 id="resposta">

@@ -10,7 +10,7 @@ var cookies = document.getElementsByClassName("cookie-popup")
 
 var botaoLimpar = document.getElementById("limpar");
 var formEnviar = document.getElementById("form-enviar");
-var botaoDoBiscoito = document.getElementById("bisscoito");
+var botaoDoBiscoito = document.getElementById("cookie-popup__button");
 
 botaoDoBiscoito.addEventListener("click", (event) => {
     event.preventDefault();

@@ -192,22 +192,6 @@ body {
   text-align: center;
 }
 
-.cookie-popup__button {
-  display: inline-block;
-  background-color: #fff;
-  color: #333;
-  border: none;
-  padding: 8px 16px;
-  margin: 0 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.cookie-popup__button:hover {
-  background-color: #ccc;
-}
-
 main {
   max-width: 268.78px;
 }

@@ -16,14 +16,24 @@
         <h1>Qual meu CEP?</h1>
       </div>
     </nav>
+    
     <main>
 
       <div class="cookie-popup">
-        <p>Este site utiliza cookies para melhorar sua experiência de navegação. Os cookies 
+        <p>Este site utiliza cookies para melhorar sua experiência de navegação e Google Adsense. Os cookies 
           utilizados são apenas para fins estatísticos e de análise de tráfego, e não são 
           transferidos para nossos servidores. Ao continuar navegando, você concorda com 
           nosso uso de cookies.</p>
-        <button class="cookie-button" id="bisscoito">Entendi</button>
+          <button class="cookie-popup__button" onclick="acceptCookies()">Aceitar</button>
+
+        <script>
+          function acceptCookies() {
+            // Define um cookie de aceitação com validade de 1 ano
+            document.cookie = "cookie_consent=true; max-age=" + 60 * 60 * 24 * 365;
+            // Esconde o popup
+            document.querySelector(".cookie-popup").style.display = "none";
+          }
+        </script>
       </div>
 
       <h3 id="resposta">

@@ -181,25 +181,31 @@ body {
   z-index: 9999;
 }
 
-.cookie-popup p {
-  font-size: 14px;
-  margin: 0;
-  line-height: 1.4;
-  color: #666;
+.cookie-popup {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
 }
 
-.cookie-button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
+.cookie-popup__button {
   display: inline-block;
-  font-size: 16px;
-  margin-top: 16px;
-  cursor: pointer;
+  background-color: #fff;
+  color: #333;
+  border: none;
+  padding: 8px 16px;
+  margin: 0 10px;
   border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cookie-popup__button:hover {
+  background-color: #ccc;
 }
 
 main {

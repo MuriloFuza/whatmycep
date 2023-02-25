@@ -29,53 +29,39 @@ formEnviar.addEventListener("submit", (event) => {
 
     
     
-    url = "http://cep.la/"+estado+"/";
+    url = "https://viacep.com.br/ws/"+estado+"/";
     
     if(cidade){
-        url += cidade.replace(" ","-")+"/";
-        if(bairro){
-            url += bairro.replace(" ","-")+"/";
+        url += cidade + "/";
+        if(rua){
+            url += rua + "/json";
         }
     }
 
     console.log(url)
     var resjson, result
 
-    function paginated_fetch(
-        url,page = 1,
-        previousResponse = []
-      ) {
+    fetch(`${url}`, {
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }) // Append the page number to the base URL
+      .then(response => response.json())
+      .then((data) => {
 
-        return fetch(`${url}${page}`, {
-            headers: {
-                "Accept": "application/json"
-            },
-            referrer: "unsafe_url" 
-        }) // Append the page number to the base URL
-          .then(response => response.json())
-          .then(newResponse => {
-            const response = [...previousResponse, ...newResponse]; // Combine the two arrays
-      
-            if (newResponse.length !== 0) {
-              page++;
-      
-              return paginated_fetch(url, page, response);
-            }
-      
-            return response;
-          });
-      }
-
-    loader.style.display = "block"
-    paginated_fetch(url).then((data) => {
-        loader.style.display = "none"
+        function removerAcentos(texto) {
+            return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
+        
         console.log(data)
         resjson = data;
-        result = resjson.filter( obj => obj.nome.split("-")[0].trim().includes(rua))
 
+        result = resjson.filter( obj => removerAcentos(obj.bairro).includes(removerAcentos(bairro)))
+        console.log(result)
+        
         for(const i of result){
             
-            const obj = i.nome.split("-")[1].trim()
+            const obj = i.complemento.trim()
 
             const de = obj.startsWith("de")
            
@@ -88,7 +74,7 @@ formEnviar.addEventListener("submit", (event) => {
                     //exemplo de 2436/2437 ao fim
                     //1949
                     const num = obj.split("/")[0].split(" ")[1]
-                    if(num < numero){}//fora da rua
+                    if(num > numero){}//fora da rua
                     else{
                         span.innerHTML = "Seu CEP é: " + i.cep
                         console.log(numero,"Dentro da rua",i)
@@ -126,7 +112,20 @@ formEnviar.addEventListener("submit", (event) => {
             
 
         }
+        
+      })
+
+    
+    //loader.style.display = "block"
+    /*
+    paginated_fetch(url).then((data) => {
+        loader.style.display = "none"
+        console.log(data)
+        
+
+        
     })
+    */
 
 })
 
@@ -136,4 +135,6 @@ botaoLimpar.addEventListener("click", function () {
     bairroInput.value = "";
     ruaInput.value = "";
     numeroInput.value = "";    
+    span.innerHTML = "Você ainda não buscou seu CEP!"
 });
+

@@ -27,19 +27,7 @@ formEnviar.addEventListener("submit", (event) => {
     var rua = ruaInput.value;
     var numero = numeroInput.value;
 
-    var responseValidate = validateForm()
-    if(!responseValidate[0]){
-        return
-    }else{
-        const secretKey = "6LeqHrMkAAAAAOPrx7d5Ol-nD8OLl6cBVVW3tt9L";
-        const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${responseValidate[1]}`;
-
-        const response = fetch(url, {
-            method: "post",
-        }).then( response => response.json())
-          .then((data) => data.success)
-        console.log(response)
-    }
+    validateForm()
 
     loader.style.display = "block"
 

@@ -45,9 +45,9 @@ formEnviar.addEventListener("submit", (event) => {
             "Content-Type": "application/json",
         },
     }) // Append the page number to the base URL
-      .then(response => response.json())
+      .then(response => response.json() )
       .then((data) => {
-
+        console.log(data)
         function removerAcentos(texto) {
             return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
         }
@@ -56,6 +56,12 @@ formEnviar.addEventListener("submit", (event) => {
 
         result = resjson.filter( obj => removerAcentos(obj.bairro).includes(removerAcentos(bairro)))
         
+        if(result.length < 1){
+            loader.style.display = "none"
+            span.innerHTML = "Verifique seu endereço! Infelizmente não encontramos seu CEP"
+            return 
+        }
+
         for(const i of result){
             
             const obj = i.complemento.trim()
@@ -105,8 +111,10 @@ formEnviar.addEventListener("submit", (event) => {
         
         loader.style.display = "none"
       })
-      
-
+      .catch((error) => {
+        console.log(error)
+        span.innerHTML = "Verifique seu endereço! Infelizmente não encontramos seu CEP"
+      })
 })
 
 botaoLimpar.addEventListener("click", function () {

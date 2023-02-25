@@ -124,7 +124,7 @@ formEnviar.addEventListener("submit", (event) => {
             
 
         }
-        limparCampos()
+        limparCamposConsulta()
         loader.style.display = "none"
     })
     .catch((error) => {

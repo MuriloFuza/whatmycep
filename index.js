@@ -42,7 +42,7 @@ formEnviar.addEventListener("submit", (event) => {
     if(validateForm() === false){
         return
     }
-    
+
     loader.style.display = "block"
 
     url = "https://viacep.com.br/ws/"+estado+"/";
@@ -124,7 +124,7 @@ formEnviar.addEventListener("submit", (event) => {
             
 
         }
-        
+        grecaptcha.reset();
         loader.style.display = "none"
     })
     .catch((error) => {

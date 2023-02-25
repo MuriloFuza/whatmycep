@@ -7,10 +7,17 @@ var numeroInput = document.getElementById("numero");
 var loader = document.getElementById("loader")
 var span = document.getElementById("resposta")
 var cookies = document.getElementsByClassName("cookie-popup")
+var reCaptcha = document.getElementsById("g-recaptcha")
 
 var botaoLimpar = document.getElementById("limpar");
 var formEnviar = document.getElementById("form-enviar");
 var botaoDoBiscoito = document.getElementById("cookie-button");
+
+
+reCaptcha.addEventListener("submit", (event ) => {
+    console.log(event)
+})
+
 
 botaoDoBiscoito.addEventListener("click", (event) => {
     event.preventDefault();

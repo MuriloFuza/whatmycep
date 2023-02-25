@@ -12,9 +12,6 @@ var botaoLimpar = document.getElementById("limpar");
 var formEnviar = document.getElementById("form-enviar");
 var botaoDoBiscoito = document.getElementById("cookie-button");
 
-
-
-
 botaoDoBiscoito.addEventListener("click", (event) => {
     event.preventDefault();
     cookies[0].style.display = "none";
@@ -23,12 +20,40 @@ botaoDoBiscoito.addEventListener("click", (event) => {
 
 formEnviar.addEventListener("submit", (event) => {
     event.preventDefault();
-    loader.style.display = "block"
+    
     var estado = estadoSelect.value;
     var cidade = cidadeInput.value;
     var bairro = bairroInput.value;
     var rua = ruaInput.value;
     var numero = numeroInput.value;
+
+    var responseValidate = validateForm()
+    if(!responseValidate[0]){
+        return
+    }else{
+        const secretKey = "6LeqHrMkAAAAAOPrx7d5Ol-nD8OLl6cBVVW3tt9L";
+        const url = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${responseValidate[1]}`;
+
+        const response = fetch(url, {
+            method: "post",
+        }).then( response => response.json())
+          .then((data) => data.success)
+        console.log(response)
+    }
+
+    loader.style.display = "block"
+
+    function validateForm() {
+        var response = grecaptcha.getResponse();
+        if(response.length == 0) {
+          // O usuário não preencheu o reCAPTCHA v2
+          alert("Por favor, preencha o reCAPTCHA v2.");
+          return [false];
+        } else {
+          // O usuário preencheu o reCAPTCHA v2
+          return [true, response];
+        }
+      }
 
     
     

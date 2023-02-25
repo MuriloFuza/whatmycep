@@ -147,3 +147,12 @@ function limparCampos () {
     span.innerHTML = "Você ainda não buscou seu CEP!"
     grecaptcha.reset();
 }
+
+function limparCamposConsulta () {
+    estadoSelect.value = ""
+    cidadeInput.value = "";
+    bairroInput.value = "";
+    ruaInput.value = "";
+    numeroInput.value = "";    
+    grecaptcha.reset();
+}

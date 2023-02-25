@@ -27,7 +27,9 @@ formEnviar.addEventListener("submit", (event) => {
     var rua = ruaInput.value;
     var numero = numeroInput.value;
 
-    validateForm()
+    if(!validateForm()){
+        return
+    }
 
     loader.style.display = "block"
 
@@ -36,10 +38,10 @@ formEnviar.addEventListener("submit", (event) => {
         if(response.length == 0) {
           // O usuário não preencheu o reCAPTCHA v2
           alert("Por favor, preencha o reCAPTCHA v2.");
-          return [false];
+          return false;
         } else {
           // O usuário preencheu o reCAPTCHA v2
-          return [true, response];
+          return true;
         }
       }
 

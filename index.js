@@ -27,12 +27,6 @@ formEnviar.addEventListener("submit", (event) => {
     var rua = ruaInput.value;
     var numero = numeroInput.value;
 
-    if(!validateForm()){
-        return
-    }
-
-    loader.style.display = "block"
-
     function validateForm() {
         var response = grecaptcha.getResponse();
         if(response.length == 0) {
@@ -45,94 +39,98 @@ formEnviar.addEventListener("submit", (event) => {
         }
       }
 
-    
-    
-    url = "https://viacep.com.br/ws/"+estado+"/";
-    
-    if(cidade){
-        url += cidade + "/";
-        if(rua){
-            url += rua + "/json";
-        }
-    }
+    if(!validateForm()){
+        return
+    }else{
+        loader.style.display = "block"
 
-    var resjson, result
-    
-    fetch(`${url}`, {
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }) // Append the page number to the base URL
-      .then(response => response.json() )
-      .then((data) => {
-        console.log(data)
-        function removerAcentos(texto) {
-            return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        }
+        url = "https://viacep.com.br/ws/"+estado+"/";
         
-        resjson = data;
-
-        result = resjson.filter( obj => removerAcentos(obj.bairro).includes(removerAcentos(bairro)))
-        
-        if(result.length < 1){
-            loader.style.display = "none"
-            span.innerHTML = "Verifique seu endereço! Infelizmente não encontramos seu CEP"
-            return 
+        if(cidade){
+            url += cidade + "/";
+            if(rua){
+                url += rua + "/json";
+            }
         }
 
-        for(const i of result){
+        var resjson, result
+        
+        fetch(`${url}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }) // Append the page number to the base URL
+        .then(response => response.json() )
+        .then((data) => {
+            console.log(data)
+            function removerAcentos(texto) {
+                return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            }
             
-            const obj = i.complemento.trim()
+            resjson = data;
 
-            const de = obj.startsWith("de")
-           
+            result = resjson.filter( obj => removerAcentos(obj.bairro).includes(removerAcentos(bairro)))
+            
+            if(result.length < 1){
+                loader.style.display = "none"
+                span.innerHTML = "Verifique seu endereço! Infelizmente não encontramos seu CEP"
+                return 
+            }
 
-            if(de){
-                const defim = obj.endsWith("ao fim")
-                if(defim){
-                    //se for de ----/---- ao fim
-                    //exemplo de 2436/2437 ao fim
-                    //1949
-                    const num = obj.split("/")[0].split(" ")[1]
-                    if(num > numero){}//fora da rua
-                    else{
-                        span.innerHTML = "Seu CEP é: " + i.cep
-                        break;
-                    }//dentro da rua
-                    
-                    
+            for(const i of result){
+                
+                const obj = i.complemento.trim()
+
+                const de = obj.startsWith("de")
+            
+
+                if(de){
+                    const defim = obj.endsWith("ao fim")
+                    if(defim){
+                        //se for de ----/---- ao fim
+                        //exemplo de 2436/2437 ao fim
+                        //1949
+                        const num = obj.split("/")[0].split(" ")[1]
+                        if(num > numero){}//fora da rua
+                        else{
+                            span.innerHTML = "Seu CEP é: " + i.cep
+                            break;
+                        }//dentro da rua
+                        
+                        
+                    }else{
+                        //se for de ----/---- a ----/----
+                        const numMenor = obj.split("/")[0].split(" ")[1]
+                        const numMaior = obj.split("/")[2]
+
+                        if( (numero < numMenor) || (numero > numMaior) ){}//fora da rua
+                        else{
+                            //dentro da rua
+                            span.innerHTML = "Seu CEP é: " + i.cep
+                            break;
+                        }
+                    }
                 }else{
-                    //se for de ----/---- a ----/----
-                    const numMenor = obj.split("/")[0].split(" ")[1]
-                    const numMaior = obj.split("/")[2]
-
-                    if( (numero < numMenor) || (numero > numMaior) ){}//fora da rua
+                    //se for até ----/----
+                    const num = obj.split("/")[1]
+                    if(numero > num){}//fora da rua
                     else{
                         //dentro da rua
                         span.innerHTML = "Seu CEP é: " + i.cep
                         break;
                     }
                 }
-            }else{
-                //se for até ----/----
-                const num = obj.split("/")[1]
-                if(numero > num){}//fora da rua
-                else{
-                    //dentro da rua
-                    span.innerHTML = "Seu CEP é: " + i.cep
-                    break;
-                }
+                
+
             }
             
-
-        }
-        
-        loader.style.display = "none"
-      })
-      .catch((error) => {
-        console.log(error)
-        span.innerHTML = "Verifique seu endereço! Infelizmente não encontramos seu CEP"
-      })
+            loader.style.display = "none"
+        })
+        .catch((error) => {
+            console.log(error)
+            span.innerHTML = "Verifique seu endereço! Infelizmente não encontramos seu CEP"
+        })
+    }
 })
 
 botaoLimpar.addEventListener("click", function () {

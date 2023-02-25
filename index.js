@@ -124,7 +124,7 @@ formEnviar.addEventListener("submit", (event) => {
             
 
         }
-        grecaptcha.reset();
+        limparCampos()
         loader.style.display = "none"
     })
     .catch((error) => {
@@ -135,11 +135,15 @@ formEnviar.addEventListener("submit", (event) => {
 })
 
 botaoLimpar.addEventListener("click", function () {
+    limparCampos()
+});
+
+function limparCampos () {
     estadoSelect.value = ""
     cidadeInput.value = "";
     bairroInput.value = "";
     ruaInput.value = "";
     numeroInput.value = "";    
     span.innerHTML = "Você ainda não buscou seu CEP!"
-});
-
+    grecaptcha.reset();
+}

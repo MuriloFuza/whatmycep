@@ -20,7 +20,7 @@ botaoDoBiscoito.addEventListener("click", (event) => {
 
 formEnviar.addEventListener("submit", (event) => {
     event.preventDefault();
-
+    loader.style.display = "block"
     var estado = estadoSelect.value;
     var cidade = cidadeInput.value;
     var bairro = bairroInput.value;
@@ -38,9 +38,8 @@ formEnviar.addEventListener("submit", (event) => {
         }
     }
 
-    console.log(url)
     var resjson, result
-
+    
     fetch(`${url}`, {
         headers: {
             "Content-Type": "application/json",
@@ -53,11 +52,9 @@ formEnviar.addEventListener("submit", (event) => {
             return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
         }
         
-        console.log(data)
         resjson = data;
 
         result = resjson.filter( obj => removerAcentos(obj.bairro).includes(removerAcentos(bairro)))
-        console.log(result)
         
         for(const i of result){
             
@@ -69,7 +66,6 @@ formEnviar.addEventListener("submit", (event) => {
             if(de){
                 const defim = obj.endsWith("ao fim")
                 if(defim){
-                    console.log("entrou no defim")
                     //se for de ----/---- ao fim
                     //exemplo de 2436/2437 ao fim
                     //1949
@@ -77,13 +73,11 @@ formEnviar.addEventListener("submit", (event) => {
                     if(num > numero){}//fora da rua
                     else{
                         span.innerHTML = "Seu CEP é: " + i.cep
-                        console.log(numero,"Dentro da rua",i)
                         break;
                     }//dentro da rua
                     
                     
                 }else{
-                    console.log("Não entrou no defim")
                     //se for de ----/---- a ----/----
                     const numMenor = obj.split("/")[0].split(" ")[1]
                     const numMaior = obj.split("/")[2]
@@ -92,20 +86,16 @@ formEnviar.addEventListener("submit", (event) => {
                     else{
                         //dentro da rua
                         span.innerHTML = "Seu CEP é: " + i.cep
-                        console.log(numero,"Dentro da rua",i)
                         break;
                     }
                 }
             }else{
-                console.log("entrou no até")
                 //se for até ----/----
                 const num = obj.split("/")[1]
-                console.log(num,numero)
                 if(numero > num){}//fora da rua
                 else{
                     //dentro da rua
                     span.innerHTML = "Seu CEP é: " + i.cep
-                    console.log(numero,"Dentro da rua",i)
                     break;
                 }
             }
@@ -113,19 +103,9 @@ formEnviar.addEventListener("submit", (event) => {
 
         }
         
-      })
-
-    
-    //loader.style.display = "block"
-    /*
-    paginated_fetch(url).then((data) => {
         loader.style.display = "none"
-        console.log(data)
-        
-
-        
-    })
-    */
+      })
+      
 
 })
 
